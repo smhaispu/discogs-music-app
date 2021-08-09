@@ -1,19 +1,21 @@
-import { StyledPost, Small } from './Release.style'
-
+import { StyledPost, Small, Image } from './Release.style'
+import defaultImage from '../Assets/defaultImage.jpeg'
 function Post(props) {
     const {
         artist,
-
-        status,
-
+        year,
         title,
-
+        thumb
     } = props.data;
     return (
         <StyledPost className="post">
-            {status && <Small>{status}</Small>}
+            <div>
+                {thumb ? <Image src={thumb} alt="No image" /> : <Image src={defaultImage} alt="No image" />}
+            </div>
+
             <h1>{title}</h1>
             <p>{artist}</p>
+            {year && <Small>{year}</Small>}
         </StyledPost>
     );
 }

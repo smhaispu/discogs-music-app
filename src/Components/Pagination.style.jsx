@@ -18,13 +18,13 @@ export const Button = styled.div`
     background: #fff;
     border: none;
     padding: 10px;
-    color: blue;
+    color: #5696d3;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
     margin: 0 10px;
     cursor: pointer;
     &.disabled {
         pointer-events: none;
-        box-shadow: none;
+        cursor:not-allowed;
         color: #999;
     }
 `

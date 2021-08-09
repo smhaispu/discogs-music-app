@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import ListOfReleases from './Components/ListOfReleases';
 import { Context } from './'
-import './App.css';
+import Loader from './Utils/Loader'
+import { Header } from './App.style'
+import ListOfReleases from './Components/ListOfReleases';
+
+
 
 function App() {
   const [state, dispatch] = useState({
@@ -10,14 +13,16 @@ function App() {
       page: 1,
       pages: 5,
       per_page: 25
-    }
+    },
+    searchVal: ''
   });
 
   return (
     <Context.Provider value={{ state, dispatch }}>
       <div className="App">
-        <h1>Discogs App</h1>
+        <Header>Discogs App</Header>
         <ListOfReleases />
+        <Loader />
       </div>
     </Context.Provider>
   );

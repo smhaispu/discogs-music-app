@@ -1,9 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import fetchAPI from '../Utils/fetchCalls';
 import { URLObject } from '../Utils/Constants'
 import Post from "./ReleaseItem";
 import Pagination from './Pagination'
 import { Context } from "..";
+import { debounce } from '../Utils/helperFunctions'
+import SearchBox from "./SearchBox";
 
 const ListOfReleases = () => {
 
@@ -12,10 +14,10 @@ const ListOfReleases = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const { state, dispatch } = useContext(Context);
     const dataLimit = 25;
-    console.log('state', state);
     const getData = async (inputParam) => {
         let dataResponse;
         let url = inputParam ? URLObject.getSeachData + inputParam : URLObject.getMusicData;
+        dispatch({ ...state, isLoading: true });
         if (!inputParam) {
             url = url + `?page=${currentPage}&per_page=${dataLimit}`
         }
@@ -23,57 +25,70 @@ const ListOfReleases = () => {
             const response = await caches.match(url);
             if (response && !dataResponse) {
                 const results = await response.json();
-                dispatch({ ...state, ...results });
+                const paginationResponse = results.pagination;
+                const releases = results.releases ? results.releases : results.results;
+                dispatch({
+                    ...state, pagination: { ...paginationResponse }, releases: [...releases],
+                    isLoading: false
+                });
             }
         }
         try {
 
             dataResponse = await fetchAPI('GET', url);
+            const paginationResponse = dataResponse.pagination;
+            const releases = dataResponse.releases ? dataResponse.releases : dataResponse.results;
             setPages(Math.round(dataResponse.length / dataLimit));
-            dispatch({ ...state, ...dataResponse });
+            dispatch({
+                ...state, pagination: { ...paginationResponse }, releases: [...releases],
+                isLoading: false
+            });
             // setReleaseList(dataResponse);
         } catch (e) {
             alert('You are offline the data shown is from cached data!')
+            dispatch({
+                ...state,
+                isLoading: false
+            });
         } finally {
             dataResponse = null;
         }
     }
 
+    const debouncedGetData = useCallback(debounce(getData, 1000), []);
 
     const handleChangeValue = (e) => {
         setValue(e.target.value);
-        getData(e.target.value);
+        debouncedGetData(e.target.value);
     }
 
     const handlePaginationChange = async (type) => {
         const url = state.pagination.urls[type];
+        dispatch({ ...state, isLoading: true });
         let dataResponse;
         if ('caches' in window) {
             const response = await caches.match(url);
             if (response && !dataResponse) {
                 const results = await response.json();
-                // setReleaseList(results);
                 dispatch({
-                    ...results
+                    ...results,
+                    isLoading: false
                 })
             }
         }
         try {
             dataResponse = await fetchAPI('GET', url);
             setPages(Math.round(dataResponse.length / dataLimit));
-            // setReleaseList(dataResponse);
             dispatch({
-                ...dataResponse
+                ...dataResponse,
+                isLoading: false
             })
         } catch (e) {
-            alert('You are offline the data shown is from cached data!')
+            console.log('You are offline the data shown is from cached data!')
         } finally {
             dataResponse = null;
         }
     }
-
-
-
 
     useEffect(() => {
         getData();
@@ -81,7 +96,7 @@ const ListOfReleases = () => {
 
 
     return (<>
-        <input value={value} onChange={handleChangeValue} />
+        <SearchBox value={value} handleChange={handleChangeValue} />
         {state?.releases?.length > 0 &&
             <Pagination
                 pages={pages}

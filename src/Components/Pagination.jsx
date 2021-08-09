@@ -28,7 +28,6 @@ function Pagination({ data, RenderComponent, title, setCurrentPage, handlePagina
 
     return (
         <div>
-            <h1>{title}</h1>
 
             {/* show the posts, 10 posts at a time */}
             <DataContainer className="dataContainer">

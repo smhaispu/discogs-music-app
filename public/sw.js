@@ -1,6 +1,6 @@
 const cacheName = "discogsPWA-v1";
 const dataCacheName = "discogsDataPWA-v1";
-const filesToCache = ['/', '/index.html', '/src/index.js', '/src/app.js'];
+const filesToCache = ['/', '/index.html', '/src/index.js', '/src/app.js', 'https://img.discogs.com/'];
 const dataURL = 'https://api.discogs.com/artists/'
 
 self.addEventListener('install', event => {
