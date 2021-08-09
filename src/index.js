@@ -3,7 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+// console.log('navigator', navigator);
+export const Context = React.createContext(
+  {
+    pagination: {
+      page: 1,
+      per_page: 25
+    },
+  }
+);
 ReactDOM.render(
   <React.StrictMode>
     <App />

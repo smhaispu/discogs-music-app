@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import ListOfReleases from './Components/ListOfReleases';
+import { Context } from './'
 import './App.css';
 
 function App() {
+  const [state, dispatch] = useState({
+    pagination: {
+      items: 50,
+      page: 1,
+      pages: 5,
+      per_page: 25
+    }
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Context.Provider value={{ state, dispatch }}>
+      <div className="App">
+        <h1>Discogs App</h1>
+        <ListOfReleases />
+      </div>
+    </Context.Provider>
   );
 }
 
