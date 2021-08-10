@@ -1,6 +1,6 @@
 import { TOKEN } from './Constants'
 async function fetchAPI(type = 'GET', url = '', data = {}) {
-    // Default options are marked with *
+    // A common fetch framework can be enhanced to append the URL to hit in future.
     let urlConfig = {
         method: type
     }

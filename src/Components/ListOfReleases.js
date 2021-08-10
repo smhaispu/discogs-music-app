@@ -3,10 +3,9 @@ import fetchAPI from '../Utils/fetchCalls';
 import { TOKEN, URLObject } from '../Utils/Constants'
 import Post from "./ReleaseItem";
 import Pagination from './Pagination'
-import { Context, ToastContext } from "..";
+import { Context } from "..";
 import { debounce } from '../Utils/helperFunctions'
 import SearchBox from "./SearchBox";
-import ColorAlerts from '../Utils/Toast'
 import ItemDetails from './ItemDetailsPopup'
 
 const ListOfReleases = () => {
@@ -88,6 +87,10 @@ const ListOfReleases = () => {
                 isLoading: false
             })
         } catch (e) {
+            dispatch({
+                ...state,
+                isLoading: false
+            })
             console.log('You are offline the data shown is from cached data!')
         } finally {
             dataResponse = null;

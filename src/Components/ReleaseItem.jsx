@@ -3,7 +3,7 @@ import { StyledPost, Small, Image } from './Release.style'
 import defaultImage from '../Assets/defaultImage.jpeg'
 import { useContext } from 'react';
 import { Context } from '..';
-
+/* This component displays the post it accepts the release item and display*/
 function Post(props) {
     const {
         artist,
@@ -12,6 +12,7 @@ function Post(props) {
         thumb,
 
     } = props.data;
+
     const { state, dispatch } = useContext(Context);
 
     const handlePopup = () => {

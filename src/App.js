@@ -23,45 +23,25 @@ function App() {
     message: '',
     type: ''
   })
-
-  const addToast = () => {
+  const toggleToast = (show, message, type) => {
     setToast({
       ...toast,
-      show: true,
-      message: 'You are offline! But what can stop a true music Lover?',
-      type: 'warning'
+      show,
+      message,
+      type
 
     })
   }
-
   window.addEventListener('offline', function (e) {
-    addToast();
+    toggleToast(true, 'You are offline! But what can stop a true music Lover?', 'warning');
     setTimeout(() => {
-      setToast({
-        ...toast,
-        show: false,
-        message: '',
-        type: ''
-
-      })
-    }, 3000)
+      toggleToast(false, '', '');
+    }, 3000);
   });
   window.addEventListener('online', function (e) {
-    setToast({
-      ...toast,
-      show: true,
-      message: 'You are online!',
-      type: 'success'
-
-    })
+    toggleToast(true, 'You are online!', 'success');
     setTimeout(() => {
-      setToast({
-        ...toast,
-        show: false,
-        message: '',
-        type: ''
-
-      })
+      toggleToast(false, '', '');
     }, 3000)
 
   });

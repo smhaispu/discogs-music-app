@@ -30,7 +30,7 @@ function Pagination({ data, RenderComponent, title, setCurrentPage, handlePagina
     return (
         <div>
 
-            {/* show the posts, 10 posts at a time */}
+            {/* show the posts, 50 posts at a time */}
             <DataContainer className="dataContainer">
                 {
 

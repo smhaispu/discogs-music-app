@@ -1,3 +1,4 @@
+//Added custom deboucne function which accepts a function  a delay 
 export function debounce(func, wait, immediate) {
     var timeout;
     return function () {
