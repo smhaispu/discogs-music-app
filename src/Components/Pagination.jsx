@@ -7,6 +7,7 @@ import {
 import { Context } from "..";
 
 function Pagination({ data, RenderComponent, title, setCurrentPage, handlePaginationChange }) {
+
     const { state } = useContext(Context);
     function goToFirstPage() {
         setCurrentPage((page) => page - 1);
@@ -32,6 +33,7 @@ function Pagination({ data, RenderComponent, title, setCurrentPage, handlePagina
             {/* show the posts, 10 posts at a time */}
             <DataContainer className="dataContainer">
                 {
+
                     data.map(release => {
                         return <RenderComponent key={release.id} data={release} />
                     })}

@@ -12,6 +12,7 @@ export const Context = React.createContext(
     },
   }
 );
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

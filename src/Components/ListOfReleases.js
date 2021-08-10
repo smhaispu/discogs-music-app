@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import fetchAPI from '../Utils/fetchCalls';
 import { TOKEN, URLObject } from '../Utils/Constants'
 import Post from "./ReleaseItem";
 import Pagination from './Pagination'
-import { Context } from "..";
+import { Context, ToastContext } from "..";
 import { debounce } from '../Utils/helperFunctions'
 import SearchBox from "./SearchBox";
 import ColorAlerts from '../Utils/Toast'
@@ -15,53 +15,12 @@ const ListOfReleases = () => {
     const [pages, setPages] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const { state, dispatch } = useContext(Context);
+
+
     const dataLimit = 25;
-    const addToast = () => {
-        dispatch({
-            ...state,
-            toast: {
-                show: true,
-                message: 'You are offline! But what can stop a true music Lover?',
-                type: 'warning'
-            }
-        })
-    }
 
-    window.addEventListener('offline', function (e) {
-        addToast();
-        setTimeout(() => {
-            dispatch({
-                ...state,
-                toast: {
-                    show: false,
-                    message: '',
-                    type: ''
-                }
-            })
-        }, 3000)
-    });
-    window.addEventListener('online', function (e) {
-        dispatch({
-            ...state,
-            toast: {
-                message: 'You are online!',
-                type: 'success'
-            }
-        })
-        setTimeout(() => {
-            dispatch({
-                ...state,
-                toast: {
-                    show: false,
-                    message: '',
-                    type: ''
-                }
-            })
-        }, 3000)
 
-    });
-
-    const getCachedResponse = async (url) => {
+    const getCachedResponse = useCallback(async (url) => {
         if ('caches' in window) {
             const response = await caches.match(url.includes('token') ? url : url + '&token=' + TOKEN);
             if (response) {
@@ -74,21 +33,11 @@ const ListOfReleases = () => {
                     releases: [...releases],
                     isLoading: false
                 });
-                // setTimeout(() => {
-                //     dispatch({
-                //         ...state,
-                //         toast: {
-                //             show: false,
-                //             message: '',
-                //             type: ''
-                //         }
-                //     })
-                // }, 3000)
             }
         }
-    }
+    }, [state])
 
-    const getData = async (inputParam) => {
+    const getData = useCallback(async (inputParam) => {
         let dataResponse;
         let url = inputParam ? URLObject.getSeachData + inputParam : URLObject.getMusicData;
         dispatch({ ...state, isLoading: true });
@@ -117,7 +66,7 @@ const ListOfReleases = () => {
         } finally {
             dataResponse = null;
         }
-    }
+    }, [])
 
     const debouncedGetData = useCallback(debounce(getData, 1000), []);
 
@@ -152,8 +101,7 @@ const ListOfReleases = () => {
 
     return (<>
         <SearchBox value={value} handleChange={handleChangeValue} />
-        <ItemDetails />
-        {state?.toast?.show && <ColorAlerts />}
+        {state?.popUpDetails?.isOpen && <ItemDetails />}
         {state?.releases?.length > 0 &&
             <Pagination
                 pages={pages}
@@ -170,4 +118,4 @@ const ListOfReleases = () => {
     </>)
 }
 
-export default ListOfReleases;
+export default React.memo(ListOfReleases);
