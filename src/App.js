@@ -20,8 +20,9 @@ function App() {
   return (
     <Context.Provider value={{ state, dispatch }}>
       <div className="App">
-        <Header>Discogs App</Header>
+        <Header>Nirvana</Header>
         <ListOfReleases />
+
         <Loader />
       </div>
     </Context.Provider>

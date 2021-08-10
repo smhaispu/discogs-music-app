@@ -46,3 +46,19 @@ export const SearchBoxContainer = styled.div`
   align-items: center;
   
   `
+export const Content = styled.div`
+    display:flex;
+    flex-direction: column;
+    align-content:center;
+    align-items:center;
+    min-width:250px;
+    box-sizing:border-box;
+`
+export const DetailsContainter = styled.div`
+    background-color: aliceblue;
+    max-height: 200px;
+    overflow-y: scroll;
+    margin-top: 15px;
+    padding: 15px;
+
+  `

@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import { Context } from '..'
 
 const StyledLoader = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    div {
-    margin: 100px;
-}
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    place-content: center;
+    background: rgba(255, 255, 255, 0.5);
 `
 
 const Spinner = styled.div`

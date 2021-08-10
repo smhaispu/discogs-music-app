@@ -6,6 +6,7 @@ import Pagination from './Pagination'
 import { Context } from "..";
 import { debounce } from '../Utils/helperFunctions'
 import SearchBox from "./SearchBox";
+import ItemDetails from './ItemDetailsPopup'
 
 const ListOfReleases = () => {
 
@@ -14,16 +15,12 @@ const ListOfReleases = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const { state, dispatch } = useContext(Context);
     const dataLimit = 25;
-    const getData = async (inputParam) => {
-        let dataResponse;
-        let url = inputParam ? URLObject.getSeachData + inputParam : URLObject.getMusicData;
-        dispatch({ ...state, isLoading: true });
-        if (!inputParam) {
-            url = url + `?page=${currentPage}&per_page=${dataLimit}`
-        }
+
+
+    const getCachedResponse = async (url) => {
         if ('caches' in window) {
             const response = await caches.match(url);
-            if (response && !dataResponse) {
+            if (response && state.isLoading) {
                 const results = await response.json();
                 const paginationResponse = results.pagination;
                 const releases = results.releases ? results.releases : results.results;
@@ -33,6 +30,16 @@ const ListOfReleases = () => {
                 });
             }
         }
+    }
+
+    const getData = async (inputParam) => {
+        let dataResponse;
+        let url = inputParam ? URLObject.getSeachData + inputParam : URLObject.getMusicData;
+        dispatch({ ...state, isLoading: true });
+        if (!inputParam) {
+            url = url + `?page=${currentPage}&per_page=${dataLimit}`
+        }
+        getCachedResponse(url);
         try {
 
             dataResponse = await fetchAPI('GET', url);
@@ -43,9 +50,9 @@ const ListOfReleases = () => {
                 ...state, pagination: { ...paginationResponse }, releases: [...releases],
                 isLoading: false
             });
-            // setReleaseList(dataResponse);
+
         } catch (e) {
-            alert('You are offline the data shown is from cached data!')
+            console.log('You are offline the data shown is from cached data!')
             dispatch({
                 ...state,
                 isLoading: false
@@ -66,16 +73,7 @@ const ListOfReleases = () => {
         const url = state.pagination.urls[type];
         dispatch({ ...state, isLoading: true });
         let dataResponse;
-        if ('caches' in window) {
-            const response = await caches.match(url);
-            if (response && !dataResponse) {
-                const results = await response.json();
-                dispatch({
-                    ...results,
-                    isLoading: false
-                })
-            }
-        }
+        getCachedResponse(url);
         try {
             dataResponse = await fetchAPI('GET', url);
             setPages(Math.round(dataResponse.length / dataLimit));
@@ -97,6 +95,7 @@ const ListOfReleases = () => {
 
     return (<>
         <SearchBox value={value} handleChange={handleChangeValue} />
+        <ItemDetails />
         {state?.releases?.length > 0 &&
             <Pagination
                 pages={pages}

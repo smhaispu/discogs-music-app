@@ -5,7 +5,7 @@ const SearchBox = ({ value, handleChange }) => {
     return <React.Fragment>
         <SearchBoxContainer>
             <div>
-                <h2>One stop shop for all music releases!</h2>
+                <h2>Search for Music you love!</h2>
             </div>
             <div>
                 <Input value={value} onChange={handleChange} placeholder="Search here for Artist.." />
