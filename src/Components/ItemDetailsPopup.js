@@ -28,7 +28,7 @@ const ItemDetails = () => {
             }
         })
     };
-    console.log('state?.popUpDetails', state?.popUpDetails);
+
 
     return (
         <div>
@@ -44,7 +44,7 @@ const ItemDetails = () => {
                         <DetailsContainter>
                             {state && state.popUpDetails && Object.keys(state?.popUpDetails).map(field => {
                                 if (field !== 'isOpen' && field !== 'thumb' && field !== 'stats' && field !== 'resource_url' && field !== 'id') {
-                                    return <DialogContentText style={{ textTransform: 'capitalize' }}>
+                                    return <DialogContentText key={field} style={{ textTransform: 'capitalize' }}>
                                         {field}: {state?.popUpDetails[field]}
                                     </DialogContentText>
                                 } else {

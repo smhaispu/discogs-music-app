@@ -1,3 +1,4 @@
+import React from 'react'
 import { StyledPost, Small, Image } from './Release.style'
 import defaultImage from '../Assets/defaultImage.jpeg'
 import { useContext } from 'react';
@@ -35,4 +36,4 @@ function Post(props) {
 }
 
 
-export default Post;
+export default React.memo(Post);

@@ -3,10 +3,11 @@ import { Context } from './'
 import Loader from './Utils/Loader'
 import { Header } from './App.style'
 import ListOfReleases from './Components/ListOfReleases';
-
+import ColorAlerts from './Utils/Toast';
 
 
 function App() {
+
   const [state, dispatch] = useState({
     pagination: {
       items: 50,
@@ -22,7 +23,6 @@ function App() {
       <div className="App">
         <Header>Nirvana</Header>
         <ListOfReleases />
-
         <Loader />
       </div>
     </Context.Provider>

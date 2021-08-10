@@ -1,7 +1,9 @@
 const cacheName = "discogsPWA-v1";
 const dataCacheName = "discogsDataPWA-v1";
-const filesToCache = ['/', '/index.html', '/src/index.js', '/src/app.js', 'https://img.discogs.com/'];
+const ImageCacheName = "discogsImagePWA-v1";
+const filesToCache = ['/', '/index.html', '/src/index.js', '/src/app.js'];
 const dataURL = 'https://api.discogs.com/artists/'
+const imageURL = 'https://img.discogs.com/';
 
 self.addEventListener('install', event => {
     event.waitUntil(caches.open(cacheName).then((cache) => {
@@ -34,13 +36,19 @@ self.addEventListener('fetch', event => {
                     return response;
                 })
             }))
+    } else if (event.request.url.startsWith(imageURL)) {
+        event.respondWith(
+            fetch(event.request).then(response => {
+                return caches.open(ImageCacheName).then(cache => {
+                    console.log('[Service Worker] Response from the Fetch API', event.request.url);
+                    cache.put(event.request.url, response.clone());
+                    return response;
+                })
+            }))
     } else {
         event.respondWith(caches.match(event.request).then(response => {
             return response || fetch(event.request);
         }))
     }
-
-
-
 
 })

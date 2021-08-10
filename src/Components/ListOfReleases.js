@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import fetchAPI from '../Utils/fetchCalls';
-import { URLObject } from '../Utils/Constants'
+import { TOKEN, URLObject } from '../Utils/Constants'
 import Post from "./ReleaseItem";
 import Pagination from './Pagination'
 import { Context } from "..";
 import { debounce } from '../Utils/helperFunctions'
 import SearchBox from "./SearchBox";
+import ColorAlerts from '../Utils/Toast'
 import ItemDetails from './ItemDetailsPopup'
 
 const ListOfReleases = () => {
@@ -15,19 +16,74 @@ const ListOfReleases = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const { state, dispatch } = useContext(Context);
     const dataLimit = 25;
+    const addToast = () => {
+        dispatch({
+            ...state,
+            toast: {
+                show: true,
+                message: 'You are offline! But what can stop a true music Lover?',
+                type: 'warning'
+            }
+        })
+    }
 
+    window.addEventListener('offline', function (e) {
+        addToast();
+        setTimeout(() => {
+            dispatch({
+                ...state,
+                toast: {
+                    show: false,
+                    message: '',
+                    type: ''
+                }
+            })
+        }, 3000)
+    });
+    window.addEventListener('online', function (e) {
+        dispatch({
+            ...state,
+            toast: {
+                message: 'You are online!',
+                type: 'success'
+            }
+        })
+        setTimeout(() => {
+            dispatch({
+                ...state,
+                toast: {
+                    show: false,
+                    message: '',
+                    type: ''
+                }
+            })
+        }, 3000)
+
+    });
 
     const getCachedResponse = async (url) => {
         if ('caches' in window) {
-            const response = await caches.match(url);
-            if (response && state.isLoading) {
+            const response = await caches.match(url.includes('token') ? url : url + '&token=' + TOKEN);
+            if (response) {
                 const results = await response.json();
                 const paginationResponse = results.pagination;
                 const releases = results.releases ? results.releases : results.results;
                 dispatch({
-                    ...state, pagination: { ...paginationResponse }, releases: [...releases],
+                    ...state,
+                    pagination: { ...paginationResponse },
+                    releases: [...releases],
                     isLoading: false
                 });
+                // setTimeout(() => {
+                //     dispatch({
+                //         ...state,
+                //         toast: {
+                //             show: false,
+                //             message: '',
+                //             type: ''
+                //         }
+                //     })
+                // }, 3000)
             }
         }
     }
@@ -52,11 +108,12 @@ const ListOfReleases = () => {
             });
 
         } catch (e) {
-            console.log('You are offline the data shown is from cached data!')
             dispatch({
                 ...state,
                 isLoading: false
             });
+
+            console.log('You are offline the data shown is from cached data!')
         } finally {
             dataResponse = null;
         }
@@ -96,6 +153,7 @@ const ListOfReleases = () => {
     return (<>
         <SearchBox value={value} handleChange={handleChangeValue} />
         <ItemDetails />
+        {state?.toast?.show && <ColorAlerts />}
         {state?.releases?.length > 0 &&
             <Pagination
                 pages={pages}

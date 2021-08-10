@@ -67,4 +67,4 @@ function Pagination({ data, RenderComponent, title, setCurrentPage, handlePagina
     );
 }
 
-export default Pagination;
+export default React.memo(Pagination);
