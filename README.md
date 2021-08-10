@@ -1,19 +1,18 @@
-# Getting Started with Create React App
+## Project is deployed on heroku
+ 
+The heroku link might take some time on first load [Click here to Open App](https://discogs-music-app.herokuapp.com/).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### Project is deployed in heroku
- 
-The heroku link might take some time on first load [Click here to Open App](https://discogs-music-app.herokuapp.com/).
+----
 
-### `npm install`
-Installs dependencies
+npm install
+npm run start
 
-### `npm run start`
+----
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -23,14 +22,14 @@ You will also see any lint errors in the console.
 
 ## Implementation
 
-The App is responsive and looks great In tab as well as mobile view.
- I am using service worker to make sure the app works smoothly in Offline Mode as well.
- I am using Cache then Network pattern to make sure the data is shown as quickly as possible
-    a. Also making Network calls makes sure that user does not see stale data.
-    b. This way the app works smoothly on low connectivity.
-The App is deployed on Heroku.
-I have added comments and future scope as well.
-Debounce is implemented for Search Artist , so we do not send multiple network calls.
+* The App is responsive and looks great In tab as well as mobile view.
+* I am using service worker to make sure the app works smoothly in Offline Mode as well.
+* I am using Cache then Network pattern to make sure the data is shown as quickly as possible
+    * a. Also making Network calls makes sure that user does not see stale data.
+    * b. This way the app works smoothly on low connectivity.
+* The App is deployed on Heroku.
+* I have added comments and future scope as well.
+* Debounce is implemented for Search Artist , so we do not send multiple network calls.
 
 ## Learn More
 

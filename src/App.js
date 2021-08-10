@@ -50,7 +50,7 @@ function App() {
     <Context.Provider value={{ state, dispatch }}>
 
       <div className="App">
-        <Header>Nirvana</Header>
+        <Header>Music App</Header>
         <ListOfReleases />
         <Loader />
       </div>
