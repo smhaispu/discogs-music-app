@@ -34,8 +34,8 @@ function Pagination({ data, RenderComponent, title, setCurrentPage, handlePagina
             <DataContainer className="dataContainer">
                 {
 
-                    data.map(release => {
-                        return <RenderComponent key={release.id} data={release} />
+                    data.map((release, idx) => {
+                        return <RenderComponent key={idx} data={release} />
                     })}
 
             </DataContainer>

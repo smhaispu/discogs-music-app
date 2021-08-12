@@ -6,7 +6,8 @@ import Pagination from './Pagination'
 import { Context } from "..";
 import { debounce } from '../Utils/helperFunctions'
 import SearchBox from "./SearchBox";
-import ItemDetails from './ItemDetailsPopup'
+
+const ItemDetails = React.lazy(() => import('./ItemDetailsPopup'));
 
 const ListOfReleases = () => {
 
@@ -14,8 +15,6 @@ const ListOfReleases = () => {
     const [pages, setPages] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const { state, dispatch } = useContext(Context);
-
-
     const dataLimit = 25;
 
 
@@ -34,7 +33,7 @@ const ListOfReleases = () => {
                 });
             }
         }
-    }, [state])
+    }, [state, dispatch])
 
     const getData = useCallback(async (inputParam) => {
         let dataResponse;
@@ -65,9 +64,9 @@ const ListOfReleases = () => {
         } finally {
             dataResponse = null;
         }
-    }, [])
+    }, [currentPage, dispatch, getCachedResponse, state])
 
-    const debouncedGetData = useCallback(debounce(getData, 1000), []);
+    const debouncedGetData = useCallback(debounce(getData, 1000), [getData]);
 
     const handleChangeValue = (e) => {
         setValue(e.target.value);

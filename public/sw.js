@@ -31,7 +31,7 @@ self.addEventListener('fetch', event => {
         event.respondWith(
             fetch(event.request).then(response => {
                 return caches.open(dataCacheName).then(cache => {
-                    console.log('[Service Worker] Response from the Fetch API', event.request.url);
+                    // console.log('[Service Worker] Response from the Fetch API', event.request.url);
                     cache.put(event.request.url, response.clone());
                     return response;
                 })
@@ -40,7 +40,7 @@ self.addEventListener('fetch', event => {
         event.respondWith(
             fetch(event.request).then(response => {
                 return caches.open(ImageCacheName).then(cache => {
-                    console.log('[Service Worker] Response from the Fetch API', event.request.url);
+                    // console.log('[Service Worker] Response from the Fetch API', event.request.url);
                     cache.put(event.request.url, response.clone());
                     return response;
                 })
